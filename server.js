@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 app.get("/recipe/:food", (req, res) => {
     let testUrl = req.url;
     let name = testUrl.substring(8);
+    name = name.charAt(0).toUpperCase() + name.substring(1); // make first character uppercase
     const dummyJson = '{"name": "'+name+'", "instructions":  "1. Boil water", "incredients": "100g matter"}';
 
     console.log(testUrl + "-> " + name);
