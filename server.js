@@ -29,12 +29,12 @@ app.get("/recipe/:food", (req, res) => {
 
     const recipeJson = JSON.parse(dummyJson);
 
+    res.send(recipeJson);
+
     res.render('index', { title: 'Recipe gt', 
                             name: recipeJson.name, 
                             incredients: recipeJson.incredients, 
                             instructions: recipeJson.instructions});
-
-    //res.send(recipeJson);
 });
 
 //app.use("/api/poems", require("./api/poems.js"));
