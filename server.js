@@ -4,6 +4,7 @@ const os = require("os");
 const path = require("path");
 const app = express();
 const port = 1234;
+let recipeJson = "";
 
 app.use(express.json());
 app.set('views', './views');
@@ -14,8 +15,16 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    //res.send("<h1>Hello World!</h1> Hello and world world3");
-    //let testUrl = req.url;
+    if (toString(recipeJson.name).length > 2) {
+        res.render('index', { title: 'Recipe gt', 
+                                name: recipeJson.name, 
+                                ingredients: recipeJson.incredients, 
+                                instructions: recipeJson.instructions});
+    }
+    else {    
+        res.send("<h1>Hello food</h1> Please wisit /food/pizza for first for recipe");
+        let testUrl = req.url;
+    }
 });
 
 app.get("/recipe/:food", (req, res) => {
@@ -26,14 +35,10 @@ app.get("/recipe/:food", (req, res) => {
     console.log(testUrl + "-> " + name);
     console.log(dummyJson);
 
-    const recipeJson = JSON.parse(dummyJson);
+    recipeJson = JSON.parse(dummyJson);
 
-    //res.send(recipeJson);
+    res.send(recipeJson);
 
-    res.render('index', { title: 'Recipe gt', 
-                            name: recipeJson.name, 
-                            ingredients: recipeJson.incredients, 
-                            instructions: recipeJson.instructions});
 });
 
 //app.use("/api/poems", require("./api/poems.js"));
