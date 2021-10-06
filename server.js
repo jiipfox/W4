@@ -15,16 +15,17 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    if (toString(recipeJson.name).length > 2) {
+    let name = "Lasagna";
+    //if (toString(recipeJson.name).length > 2) {
         res.render('index', { title: 'Recipe gt', 
-                                name: recipeJson.name, 
+                                name: name, 
                                 ingredients: recipeJson.incredients, 
                                 instructions: recipeJson.instructions});
-    }
-    else {    
-        res.send("<h1>Hello food</h1> Please wisit /food/pizza for first for recipe");
-        let testUrl = req.url;
-    }
+    //}
+    //else {    
+    //    res.send("<h1>Hello food</h1> Please wisit /food/pizza for first for recipe");
+    //    let testUrl = req.url;
+    //}
 });
 
 app.get("/recipe/:food", (req, res) => {
