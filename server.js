@@ -25,9 +25,9 @@ app.get("/recipe/:food", (req, res) => {
 
     console.log(testUrl + "-> " + name);
     console.log(dummyJson);
-    
+
     const recipeJson = JSON.parse(dummyJson);
-    response.send(recipeJson);
+    res.send(recipeJson);
 });
 
 //app.use("/api/poems", require("./api/poems.js"));
