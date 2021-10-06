@@ -14,9 +14,8 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    res.send("<h1>Hello World!</h1> Hello and world world3");
-    let testUrl = req.url;
-
+    //res.send("<h1>Hello World!</h1> Hello and world world3");
+    //let testUrl = req.url;
 });
 
 app.get("/recipe/:food", (req, res) => {
@@ -33,7 +32,7 @@ app.get("/recipe/:food", (req, res) => {
 
     res.render('index', { title: 'Recipe gt', 
                             name: recipeJson.name, 
-                            incredients: recipeJson.incredients, 
+                            ingredients: recipeJson.incredients, 
                             instructions: recipeJson.instructions});
 });
 
