@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const os = require("os");
 const path = require("path");
@@ -19,7 +20,14 @@ app.get("/", (req, res) => {
 
 app.get("/recipe/:food", (req, res) => {
     let testUrl = req.url;
-    console.log(testUrl);
+    let name = testUrl.substring(8);
+    const dummyJson = '{"name": "'+name+'", "instructions":  "1. Boil water", "incredients": "100g matter"}';
+
+    console.log(testUrl + "-> " + name);
+    console.log(dummyJson);
+    
+    const recipeJson = JSON.parse(dummyJson);
+    response.send(recipeJson);
 });
 
 //app.use("/api/poems", require("./api/poems.js"));
