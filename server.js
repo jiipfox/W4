@@ -1,4 +1,3 @@
-//const { response } = require("express");
 const express = require("express");
 const os = require("os");
 const path = require("path");
@@ -15,10 +14,11 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    res.render('index', { title: 'Recipe gt', 
+    /*res.render('index', { title: 'Recipe gt', 
                                 name: recipeJson.name, 
                                 ingredients: recipeJson.incredients, 
-                                instructions: recipeJson.instructions});
+                                instructions: recipeJson.instructions});*/
+    res.send(recipeJson);
 });
 
 app.get("/recipe/:food", (req, res) => {
@@ -40,18 +40,5 @@ app.post('/recipe/', function (req, res) {
     res.send('ENTER THE RECIPE');
     console.log("In post method");
   })
-/*
-<div id="container" class="container"></div>
-<input type="text" id="name-text">
-<h4>Ingredients</h4>
-<textarea id="ingredients-text"></textarea>
-<button id="add-ingredient" type="button">Add ingredient</button>
-<h4>instructions</h4>
-<textarea id="instructions-text"></textarea>
-<button id="add-instruction" type="button">Add instruction</button>
-<button id="submit" type="submit">Submit</button>
-*/
-//app.use("/api/poems", require("./api/poems.js"));
-
 
 app.listen(port, () => console.log(`Server listening a port ${port}!`));
