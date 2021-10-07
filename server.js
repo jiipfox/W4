@@ -15,9 +15,8 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    let name = "Lasagna";
     res.render('index', { title: 'Recipe gt', 
-                                name: name, 
+                                name: recipeJson.name, 
                                 ingredients: recipeJson.incredients, 
                                 instructions: recipeJson.instructions});
 });
