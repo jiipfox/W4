@@ -16,23 +16,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
     let name = "Lasagna";
-    //if (toString(recipeJson.name).length > 2) {
-        res.render('index', { title: 'Recipe gt', 
+    res.render('index', { title: 'Recipe gt', 
                                 name: name, 
                                 ingredients: recipeJson.incredients, 
                                 instructions: recipeJson.instructions});
-    //}
-    //else {    
-    //    res.send("<h1>Hello food</h1> Please wisit /food/pizza for first for recipe");
-    //    let testUrl = req.url;
-    //}
 });
 
 app.get("/recipe/:food", (req, res) => {
     let testUrl = req.url;
     let name = testUrl.substring(8);
     name = name.charAt(0).toUpperCase() + name.substring(1); // make first character uppercase
-    const dummyJson = '{"name": "'+name+'", "instructions":  "1. Boil water", "incredients": "100g matter"}';
+    const dummyJson = '{"name": "'+name+'", "instructions": ["1. Boil water", "2. Add matter"], "incredients": [ "100g matter", "1000g water"]}';
 
     console.log(testUrl + "-> " + name);
     console.log(dummyJson);
@@ -43,6 +37,21 @@ app.get("/recipe/:food", (req, res) => {
 
 });
 
+app.post('/recipe/', function (req, res) {
+    res.send('ENTER THE RECIPE');
+    console.log("In post method");
+  })
+/*
+<div id="container" class="container"></div>
+<input type="text" id="name-text">
+<h4>Ingredients</h4>
+<textarea id="ingredients-text"></textarea>
+<button id="add-ingredient" type="button">Add ingredient</button>
+<h4>instructions</h4>
+<textarea id="instructions-text"></textarea>
+<button id="add-instruction" type="button">Add instruction</button>
+<button id="submit" type="submit">Submit</button>
+*/
 //app.use("/api/poems", require("./api/poems.js"));
 
 
