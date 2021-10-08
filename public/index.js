@@ -25,9 +25,10 @@ async function initializeCode() {
 }
 
 async function readRecipe(){
-    let response = await fetch("/recipe/pizza");
-    let respis2 = await response.json();
-    return respis2;
+    let response = await fetch("/recipe/pazza")
+        .then(response => response.json())
+    //let respis2 = await response.json();
+    return response;
 }
 
 function addElement(name, ing, inst) {
