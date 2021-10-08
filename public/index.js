@@ -21,7 +21,7 @@ async function initializeCode() {
        );*/
 
     let recipeResp = await readRecipe();
-    addElement(recipeResp.name, recipeResp.incredients, recipeResp.instructions);
+    addElement(recipeResp.name, recipeResp.ingredients, recipeResp.instructions);
 }
 
 async function readRecipe(){
@@ -39,7 +39,7 @@ function addElement(name, ing, inst) {
     paraName.textContent = "name: " + name;
   
     const paraIng = document.createElement("P");
-    paraIng.textContent = "incredients: " + ing;
+    paraIng.textContent = "ingredients: " + ing;
 
     const paraInst = document.createElement("P");
     paraInst.textContent = "instructions: " + inst;
