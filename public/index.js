@@ -14,24 +14,43 @@ async function initializeCode() {
     let name = "";
     let incr = "";
     let inst = "";
+    let ingrList = [];
+    let instList = [];
+
     let recipeResp = await readRecipe();
     addElement(recipeResp.name, recipeResp.ingredients, recipeResp.instructions);   
 
     const addRecipeButton = document.getElementById("submit");
+    const addIngredientsButton = document.getElementById("add-ingredient");
+    const addInstructionsButton = document.getElementById("add-instruction");
+
     addRecipeButton.addEventListener("click", function() {
         const recipeName = document.getElementById("name-text");
         const recipeIngredients = document.getElementById("ingredients-text");
         const recipeInstructions = document.getElementById("instructions-text");
 
-        console.log(recipeName.value + ", " + recipeIngredients.value + ", " + recipeInstructions.value);
+        console.log(recipeName.value + ", " + ingrList + ", " + instList);
 
-    /*recipeResp = await fetch("/recipe/pizza", {})
-       .then(response => response.json())
-       .then(data => console.log(data)   
-       );*/
-       let something = storeRecipe(recipeName.value, recipeIngredients.value, recipeInstructions.value);
-       console.log(something);
-});
+        let something = storeRecipe(recipeName.value, ingrList, instList);
+        console.log("something+ " + something);});
+
+    addIngredientsButton.addEventListener("click", function() {
+        console.log("huhuu");
+        const recipeIngredients = document.getElementById("ingredients-text");
+        ingrList.push(recipeIngredients.value);
+        recipeIngredients.value = "";
+        console.log("list: " + ingrList);
+    });
+
+    addInstructionsButton.addEventListener("click", function() {
+        console.log("kukkuu");
+        const recipeInstructions = document.getElementById("instructions-text");
+        instList.push(recipeInstructions.value);
+        recipeInstructions.value = "";
+        console.log("list: " + instList);
+    });
+
+
 }
 
 function storeRecipe(name, ingredients, instructions){
@@ -40,10 +59,6 @@ function storeRecipe(name, ingredients, instructions){
         headers: {
             "Content-type": "application/json" },
         body: JSON.stringify({ "name": name, "ingredients": ingredients, "instructions": instructions})});
-    //let content = resp.json();
-    //console.log(content);
-
-    //return response;
 }
 
 async function readRecipe(){
