@@ -14,14 +14,36 @@ async function initializeCode() {
     let name = "";
     let incr = "";
     let inst = "";
+    let recipeResp = await readRecipe();
+    addElement(recipeResp.name, recipeResp.ingredients, recipeResp.instructions);   
+
+    const addRecipeButton = document.getElementById("submit");
+    addRecipeButton.addEventListener("click", function() {
+        const recipeName = document.getElementById("name-text");
+        const recipeIngredients = document.getElementById("ingredients-text");
+        const recipeInstructions = document.getElementById("instructions-text");
+
+        console.log(recipeName.value + ", " + recipeIngredients.value + ", " + recipeInstructions.value);
 
     /*recipeResp = await fetch("/recipe/pizza", {})
        .then(response => response.json())
        .then(data => console.log(data)   
        );*/
+       let something = storeRecipe(recipeName.value, recipeIngredients.value, recipeInstructions.value);
+       console.log(something);
+});
+}
 
-    let recipeResp = await readRecipe();
-    addElement(recipeResp.name, recipeResp.ingredients, recipeResp.instructions);
+function storeRecipe(name, ingredients, instructions){
+    let resp = fetch("/recipe/", {
+        method: "post",
+        headers: {
+            "Content-type": "application/json" },
+        body: JSON.stringify({ "name": name, "ingredients": ingredients, "instructions": instructions})});
+    //let content = resp.json();
+    //console.log(content);
+
+    //return response;
 }
 
 async function readRecipe(){
@@ -53,3 +75,7 @@ function addElement(name, ing, inst) {
     const currentDiv = document.getElementById("recipe");
     currentDiv.appendChild(contentDiv);
   }
+
+
+  
+

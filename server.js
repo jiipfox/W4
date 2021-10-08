@@ -33,8 +33,8 @@ app.get("/recipe/:food", (req, res) => {
 });
 
 app.post('/recipe/', function (req, res) {
-    res.send('ENTER THE RECIPE');
-    console.log("In post method");
+    res.send(req.body);
+    console.log(req.body);
   })
 
 app.listen(port, () => console.log(`Server listening a port ${port}!`));
