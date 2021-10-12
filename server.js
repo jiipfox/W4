@@ -1,9 +1,18 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const Recipe = require("./models/Recipe");
 const app = express();
 
 const os = require("os");
 const path = require("path");
 const port = 1234;
+
+const mongoDB = "mongodb://localhost:27017/testdb";
+mongoose.connect(mongoDB);
+mongoose.Promise = Promise;
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongdoDB error!!!!!!!!!!!!!!!!"));
+
 
 app.use(express.json());
 
@@ -32,9 +41,30 @@ app.get("/recipe/:food", (req, res) => {
     res.send(recipeJson);
 });
 
-app.post('/recipe/', function (req, res) {
-    res.send(req.body);
-    console.log(req.body);
+app.post('/recipe/', function (req, res, next) { // next object helps error handling?
+    // Checks if we have the recipe already
+    Recipe.findOne({ name: req.body.name}, (err, name) => {
+        if (err) return next(err);
+        if(!name){
+            new Recipe({
+                name: req.body.name,
+                ingredients: req.body.ingredients,
+                instructions: req.body.instructions
+            }).save((err) => {
+                if(err){
+                    return next(err);
+                } 
+                return res.send(req.body);
+            });
+            console.log("Found something, saving something");
+            console.log(req.body)
+        } else {
+            return res.status(403).send("Already has that recipe");
+        }
+    });
+
+    //res.send(req.body);
+    //console.log(req.body);
   })
 
 app.listen(port, () => console.log(`Server listening a port ${port}!`));
