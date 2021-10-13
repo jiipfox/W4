@@ -34,8 +34,7 @@ app.get("/recipe/:food", (req, res, next) => {
         }
         if (recipe) {
             console.log("LÖYTYI!");
-            //return res.send(recipe);
-            return recipe;
+            return res.send(recipe);
         }
         else{
             console.log("EI - !");
