@@ -1,56 +1,51 @@
 if(document.readyState !== "loading"){
-    console.log("Document is ready");
     initializeCode();
 } else {
     document.addEventListener("DOMContentLoaded", function(){
-        console.log("Document ready after waiting!");
         initializeCode();
     })
 }
 
-
-async function initializeCode() {
-    console.log("Fetch the pizza recipe");
+function initializeCode() {
     let name = "";
     let incr = "";
     let inst = "";
     let ingrList = [];
     let instList = [];
 
-    let recipeResp = await readRecipe();
-    addElement(recipeResp.name, recipeResp.ingredients, recipeResp.instructions);   
-
     const addRecipeButton = document.getElementById("submit");
     const addIngredientsButton = document.getElementById("add-ingredient");
     const addInstructionsButton = document.getElementById("add-instruction");
+    const searchBar = document.getElementById("search");
 
     addRecipeButton.addEventListener("click", function() {
         const recipeName = document.getElementById("name-text");
         const recipeIngredients = document.getElementById("ingredients-text");
         const recipeInstructions = document.getElementById("instructions-text");
-
-        console.log(recipeName.value + ", " + ingrList + ", " + instList);
-
         let something = storeRecipe(recipeName.value, ingrList, instList);
-        console.log("something+ " + something);});
+        //console.log("something+ " + something);});
+    });
 
     addIngredientsButton.addEventListener("click", function() {
-        console.log("huhuu");
         const recipeIngredients = document.getElementById("ingredients-text");
         ingrList.push(recipeIngredients.value);
         recipeIngredients.value = "";
-        console.log("list: " + ingrList);
+        //console.log("list: " + ingrList);
     });
 
     addInstructionsButton.addEventListener("click", function() {
-        console.log("kukkuu");
         const recipeInstructions = document.getElementById("instructions-text");
         instList.push(recipeInstructions.value);
         recipeInstructions.value = "";
-        console.log("list: " + instList);
+        //console.log("list: " + instList);
     });
 
-
+    searchBar.addEventListener("keydown", function (e) {
+        if (e.code === "Enter") { 
+            console.log(e.target.value);
+            readRecipe(e.target.value);
+        }
+    });
 }
 
 function storeRecipe(name, ingredients, instructions){
@@ -61,11 +56,13 @@ function storeRecipe(name, ingredients, instructions){
         body: JSON.stringify({ "name": name, "ingredients": ingredients, "instructions": instructions})});
 }
 
-async function readRecipe(){
-    let response = await fetch("/recipe/pazza")
-        .then(response => response.json())
-    //let respis2 = await response.json();
-    return response;
+async function readRecipe(recipeName){
+    let url = "/recipe/" + recipeName;
+    console.log(url);
+
+    let response = await fetch(url);
+    //let recipe = await response.json();
+    //console.log(recipe);
 }
 
 function addElement(name, ing, inst) {
@@ -90,7 +87,3 @@ function addElement(name, ing, inst) {
     const currentDiv = document.getElementById("recipe");
     currentDiv.appendChild(contentDiv);
   }
-
-
-  
-
