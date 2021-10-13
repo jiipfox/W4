@@ -24,11 +24,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/recipe/:food", (req, res, next) => {
-    //console.log("xxx: "+ req.params.name);
     const iid = "6165340bceed45e103086bc1";
-    console.log("etsi nimellä: " + req.params.food);
+    console.log("etsi reseptiä: " + req.params.food);
 
-    Recipe.findOne({ name: req.params.food }, function (err, recipe){
+    Recipe.findOne({ name: req.params.food }, (err, recipe) => {
         if (err) {
             return next(err);
         }
