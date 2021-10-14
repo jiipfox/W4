@@ -61,8 +61,10 @@ async function readRecipe(recipeName){
     console.log(url);
 
     let response = await fetch(url);
-    //let recipe = await response.json();
-    //console.log(recipe);
+    let recipe = await response.json();
+    addElement(recipe.name, recipe.ingredients, recipe.instructions);
+    
+    console.log(recipe);
 }
 
 function addElement(name, ing, inst) {
