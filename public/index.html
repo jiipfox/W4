@@ -18,18 +18,19 @@
     <script src="index.js"></script>
   </head>
   <body>
+    <nav>
+      <div class="nav-wrapper">
+          <div class="input-field">
+            <input type='search' id="search">
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            <i class="material-icons">close</i>
+          </div>
+      </div>
+    </nav>
     <div class="container">
-      <nav>
-        <div class="nav-wrapper">
-            <div class="input-field">
-              <input type="search" id="search">
-              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-              <i class="material-icons">close</i>
-            </div>
-        </div>
-      </nav>
-      <div id="recipe" class="recipe"></div>
-      <div id="insert" class="insert"></div>
+      <div id="recipe" class="recipe">
+      </div>
+      <div id="insert" class="insert">
       <h4>Recipe</h4>
       <input type="text" id="name-text">
       <h4>Ingredients</h4>
@@ -39,6 +40,7 @@
       <textarea id="instructions-text"></textarea>
       <button id="add-instruction" type="button">Add instruction</button>
       <button id="submit" type="submit">Submit</button>
+      </div>
   </div>
   </body>
 </html>
