@@ -1,14 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-var cors = require('cors');
 const Recipe = require("./models/Recipe");
-const Diet = require("./models/Category")
+const Category = require("./models/Category");
 const app = express();
 const path = require("path");
 const port = 1234;
 
-//const mongoDB = "mongodb://localhost:27017/recipedb";
-const mongoDB = "mongodb://localhost:27017/testdb";
+const mongoDB = "mongodb://localhost:27017/recipedb";
+//const mongoDB = "mongodb://localhost:27017/testdb";
 // CANNOT NOT
 mongoose.connect(mongoDB);
 mongoose.Promise = Promise;
@@ -23,12 +22,13 @@ app.use(express.static(path.join(__dirname, "public")));
 let recipeJson = "";
 
 
-app.get("/", cors(), function (req, res) {
+app.get("/", function (req, res) {
+
 });
 
-app.get("/diets/", cors(), function (req, res) {
+app.get("/diets/", function (req, res) {
     console.log("Diets page loaded, find all diets!");
-    Diet.find({}, function(err, result) {
+    Category.find({}, function(err, result) {
         if (err) throw err;
         if (result) {
             console.log("Yes found.");
@@ -63,11 +63,11 @@ app.get("/recipe/:food", (req, res, next) => {
 
 
 app.post('/test/', function (req, res, next) { // next object helps error handling?
-    Diet.findOne({ name: req.body.name}, (err, name) => {
+    Category.findOne({ name: req.body.name}, (err, name) => {
         if (err) return next(err);
         if(!name){
             console.log("POST diet, no exists");
-            new Diet({
+            new Category({
                 name: req.body.name,
             }).save((err) => {
                 if(err){
