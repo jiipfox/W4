@@ -17,6 +17,14 @@ function initializeCode() {
     const addIngredientsButton = document.getElementById("add-ingredient");
     const addInstructionsButton = document.getElementById("add-instruction");
     const searchBar = document.getElementById("search");
+    const d1 = "Vegan";
+    const d2 = "Meat";
+
+
+    storeDiet("Vegan"); // Some testing
+    storeDiet("Meat");
+
+    readDiets();
 
     addRecipeButton.addEventListener("click", function() {
         const recipeName = document.getElementById("name-text");
@@ -56,6 +64,16 @@ function storeRecipe(name, ingredients, instructions){
         body: JSON.stringify({ "name": name, "ingredients": ingredients, "instructions": instructions})});
 }
 
+function storeDiet(name){
+    console.log("Store diet");
+    let resp = fetch("/test/", {
+        method: "post",
+        headers: {
+            "Content-type": "application/json" },
+        body: JSON.stringify({"name": name})
+    } );
+}
+
 async function readRecipe(recipeName){
     let url = "/recipe/" + recipeName;
     console.log(url);
@@ -63,8 +81,23 @@ async function readRecipe(recipeName){
     let response = await fetch(url);
     let recipe = await response.json();
     addElement(recipe.name, recipe.ingredients, recipe.instructions);
-    
+
     console.log(recipe);
+}
+
+async function readDiets(){
+    let url = "/diets/";
+    console.log("READ DIETS");
+
+    let response = await fetch(url);
+    let dietsrecipes = await response.json();
+
+    if (dietsrecipes) {
+        dietsrecipes.forEach(function(recipe) {
+            console.log(recipe.name);
+            addDiets(recipe.name);
+          });    
+    } 
 }
 
 function addElement(name, ing, inst) {
@@ -88,4 +121,14 @@ function addElement(name, ing, inst) {
     // add the newly created element and its content into the DOM
     const currentDiv = document.getElementById("recipe");
     currentDiv.appendChild(contentDiv);
+  }
+
+  function addDiets(name){
+      const dietDiv = document.createElement("div");
+      const dietPara = document.createElement("P");
+      dietPara.textContent = name;
+      dietDiv.appendChild(dietPara);
+
+      const currentDiv = document.getElementById("diets");
+      currentDiv.appendChild(dietDiv);
   }

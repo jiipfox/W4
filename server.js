@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+var cors = require('cors');
 const Recipe = require("./models/Recipe");
+const Diet = require("./models/Category")
 const app = express();
-const os = require("os");
 const path = require("path");
 const port = 1234;
 
-//const mongoDB = "mongodb://localhost:27017/recipedb";
-const mongoDB = "mongodb://localhost:27017/testdb";
+const mongoDB = "mongodb://localhost:27017/recipedb";
+//const mongoDB = "mongodb://localhost:27017/testdb";
 mongoose.connect(mongoDB);
 mongoose.Promise = Promise;
 const db = mongoose.connection;
@@ -16,16 +17,32 @@ db.on("error", console.error.bind(console, "MongdoDB error!!!!!!!!!!!!!!!!"));
 
 app.use(express.json());
 
+
 app.use(express.static(path.join(__dirname, "public")));
 let recipeJson = "";
 
 
-app.get("/", (req, res) => {
-    res.send("<h1>Hels</h1>");
+app.get("/", cors(), function (req, res) {
 });
 
+app.get("/diets/", cors(), function (req, res) {
+    console.log("Diets page loaded, find all diets!");
+    Diet.find({}, function(err, result) {
+        if (err) throw err;
+        if (result) {
+            console.log("Yes found.");
+            return res.json(result)
+        } else {
+            console.log("No found.");
+            return res.send(JSON.stringify({
+                error : 'Error'
+            }))
+        }
+    })
+});
+
+
 app.get("/recipe/:food", (req, res, next) => {
-    const iid = "6165340bceed45e103086bc1";
     console.log("etsi reseptiä: " + req.params.food);
 
     Recipe.findOne({ name: req.params.food }, (err, recipe) => {
@@ -42,6 +59,27 @@ app.get("/recipe/:food", (req, res, next) => {
         }
     })
 });
+
+
+app.post('/test/', function (req, res, next) { // next object helps error handling?
+    Diet.findOne({ name: req.body.name}, (err, name) => {
+        if (err) return next(err);
+        if(!name){
+            console.log("POST diet, no exists");
+            new Diet({
+                name: req.body.name,
+            }).save((err) => {
+                if(err){
+                    return next(err);
+                } 
+                return res.send(req.body);
+            });
+        } else{
+            console.log("POST diet, already exists");
+        } // no need to else as we feed this everythyme
+    });
+  })
+
 
 app.post('/recipe/', function (req, res, next) { // next object helps error handling?
     // Checks if we have the recipe already
