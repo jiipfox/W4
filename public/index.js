@@ -21,8 +21,8 @@ function initializeCode() {
     const d2 = "Meat";
 
 
-    storeDiet("Vegan"); // Some testing
-    storeDiet("Meat");
+    //storeDiet("Vegan"); // Some testing
+    //storeDiet("Meat");
 
     readDiets();
 
