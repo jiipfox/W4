@@ -90,7 +90,8 @@ app.post('/recipe/', function (req, res, next) { // next object helps error hand
             new Recipe({
                 name: req.body.name,
                 ingredients: req.body.ingredients,
-                instructions: req.body.instructions
+                instructions: req.body.instructions,
+                categories: req.body.categories
             }).save((err) => {
                 if(err){
                     return next(err);

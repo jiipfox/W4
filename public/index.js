@@ -12,6 +12,7 @@ function initializeCode() {
     let inst = "";
     let ingrList = [];
     let instList = [];
+    let dietList = [];
 
     const addRecipeButton = document.getElementById("submit");
     const addIngredientsButton = document.getElementById("add-ingredient");
@@ -27,11 +28,26 @@ function initializeCode() {
     readDiets();
 
     addRecipeButton.addEventListener("click", function() {
+        const maxElementCount = 1000; // todo get size of collection?
+        dietList = [];
+
         const recipeName = document.getElementById("name-text");
         const recipeIngredients = document.getElementById("ingredients-text");
         const recipeInstructions = document.getElementById("instructions-text");
-        let something = storeRecipe(recipeName.value, ingrList, instList);
-        //console.log("something+ " + something);});
+
+        for (let i = 0; i < maxElementCount; i++) {
+            // Input check box checked?
+            let cb = document.getElementById("cb-" + i);
+            if (cb) {
+                if (cb.checked){
+                    // Read the label, assume one exists
+                    let spanName = document.getElementById("span-"+i);
+                    dietList.push(spanName.innerHTML);
+                }
+            }
+        } 
+        console.log(dietList);
+        let something = storeRecipe(recipeName.value, ingrList, instList, dietList);
     });
 
     addIngredientsButton.addEventListener("click", function() {
@@ -56,12 +72,12 @@ function initializeCode() {
     });
 }
 
-function storeRecipe(name, ingredients, instructions){
+function storeRecipe(name, ingredients, instructions, dietList){
     let resp = fetch("/recipe/", {
         method: "post",
         headers: {
             "Content-type": "application/json" },
-        body: JSON.stringify({ "name": name, "ingredients": ingredients, "instructions": instructions})});
+        body: JSON.stringify({ "name": name, "ingredients": ingredients, "instructions": instructions, "categories": dietList})});
 }
 
 function storeDiet(name){
@@ -87,6 +103,7 @@ async function readRecipe(recipeName){
 
 async function readDiets(){
     let url = "/diets/";
+    let counter = 0;
     console.log("READ DIETS");
 
     let response = await fetch(url);
@@ -95,7 +112,8 @@ async function readDiets(){
     if (dietsrecipes) {
         dietsrecipes.forEach(function(recipe) {
             console.log(recipe.name);
-            addDiets(recipe.name);
+            addDiets(recipe.name, counter);
+            counter = counter + 1;
           });    
     } 
 }
@@ -123,12 +141,21 @@ function addElement(name, ing, inst) {
     currentDiv.appendChild(contentDiv);
   }
 
-  function addDiets(name){
-      const dietDiv = document.createElement("div");
-      const dietPara = document.createElement("P");
-      dietPara.textContent = name;
-      dietDiv.appendChild(dietPara);
+  function addDiets(name, count){
+      const newDiv = document.createElement("div");
+      const laapeli = document.createElement("label");
+      const dietCheckBox = document.createElement("input");
+      dietCheckBox.className = 'check';
+      dietCheckBox.type = 'checkbox';
+      dietCheckBox.id = "cb-" + count;
+      const spani = document.createElement("span");
+      spani.id = "span-" + count;
+      spani.textContent = name;
+
+      laapeli.appendChild(dietCheckBox);
+      laapeli.appendChild(spani);
+      newDiv.appendChild(laapeli);
 
       const currentDiv = document.getElementById("diets");
-      currentDiv.appendChild(dietDiv);
+      currentDiv.appendChild(newDiv);
   }
