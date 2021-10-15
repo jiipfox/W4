@@ -6,6 +6,9 @@ if(document.readyState !== "loading"){
     })
 }
 
+
+let dietJson ="";
+
 function initializeCode() {
     let name = "";
     let incr = "";
@@ -20,8 +23,7 @@ function initializeCode() {
     const searchBar = document.getElementById("search");
     const d1 = "Vegan";
     const d2 = "Meat";
-
-
+    
     //storeDiet("Vegan"); // Some testing
     //storeDiet("Meat");
 
@@ -30,6 +32,7 @@ function initializeCode() {
     addRecipeButton.addEventListener("click", function() {
         const maxElementCount = 1000; // todo get size of collection?
         dietList = [];
+        let id = "";
 
         const recipeName = document.getElementById("name-text");
         const recipeIngredients = document.getElementById("ingredients-text");
@@ -42,7 +45,14 @@ function initializeCode() {
                 if (cb.checked){
                     // Read the label, assume one exists
                     let spanName = document.getElementById("span-"+i);
-                    dietList.push(spanName.innerHTML);
+
+                    // get id of the recipe that has the name
+                    console.log(dietJson);
+                    if (dietJson.length > 0){
+                        id = getIdByName(dietJson, spanName.innerHTML);
+                        console.log("id to the list = " + id);
+                        dietList.push(id);
+                    }
                 }
             }
         } 
@@ -108,6 +118,11 @@ async function readDiets(){
 
     let response = await fetch(url);
     let dietsrecipes = await response.json();
+    
+    dietJson = dietsrecipes;
+    
+    console.log("Json of categories: ");
+    console.log(dietJson);
 
     if (dietsrecipes) {
         dietsrecipes.forEach(function(recipe) {
@@ -116,6 +131,18 @@ async function readDiets(){
             counter = counter + 1;
           });    
     } 
+}
+
+function getIdByName(jsonList, name) {
+    console.log("Get id by name:\nJSON list:\n");
+    console.log(jsonList);
+    console.log("Name to search: " + name);
+    for(var i = 0; i < jsonList.length; i++) {
+        if (jsonList[i].name == name){
+            console.log(jsonList[i]._id);
+            return jsonList[i]._id;
+        }
+    }
 }
 
 function addElement(name, ing, inst) {
