@@ -2,6 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Recipe = require("./models/Recipe");
 const Category = require("./models/Category");
+const Image = require("./models/Image");
+const multer  = require('multer')
+const storage = multer.memoryStorage();
+const upload = multer({ dest: 'uploads/', storage:storage })
+const fs = require('fs');
+
+
 const app = express();
 const path = require("path");
 const port = 1234;
@@ -41,7 +48,6 @@ app.get("/diets/", function (req, res) {
         }
     })
 });
-
 
 app.get("/recipe/:food", (req, res, next) => {
     console.log("etsi reseptiä: " + req.params.food);
@@ -104,4 +110,19 @@ app.post('/recipe/', function (req, res, next) { // next object helps error hand
     });
   })
 
+  const type = upload.single('recfile');
+  app.post('/images', type, function (req, res) {
+    const file = req.file;
+    console.log("file size: " + file.size);
+    console.log("file type: " + file.mimetype);
+    console.log("blob: " + file.buffer.toString());
+    //var raw = Buffer.from(req.file.buffer.toString(), 'base64')
+    ///console.log("file raw: " + raw);
+
+    //console.log(raw);
+
+    return res.status(200).send("Image upload ok");
+
+    });
+  
 app.listen(port, () => console.log(`Server listening a port ${port}!`));
