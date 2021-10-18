@@ -130,11 +130,9 @@ app.post('/recipe/', function (req, res, next) { // next object helps error hand
                     if(err){
                         return next(err);
                     } 
-                    return res.send(req.headers);
+                    return res.status(200).send("Image upload ok");
                 })
             }
         });
-    return res.status(200).send("Image upload ok");
     });
-  
 app.listen(port, () => console.log(`Server listening a port ${port}!`));
