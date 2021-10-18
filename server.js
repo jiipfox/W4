@@ -115,14 +115,26 @@ app.post('/recipe/', function (req, res, next) { // next object helps error hand
     const file = req.file;
     console.log("file size: " + file.size);
     console.log("file type: " + file.mimetype);
-    console.log("blob: " + file.buffer.toString());
-    //var raw = Buffer.from(req.file.buffer.toString(), 'base64')
-    ///console.log("file raw: " + raw);
+    console.log("file encoding: " + file.encoding);
 
-    //console.log(raw);
-
+    Image.findOne({}, (err, name) => {
+        if (err) {
+            return next(err);
+        } else {
+            new Image({
+                    name: file.name,
+                    buffer: file.buffer,
+                    encoding: file.encoding,
+                    mimetype: file.mimetype
+                }).save((err) => {
+                    if(err){
+                        return next(err);
+                    } 
+                    return res.send(req.headers);
+                })
+            }
+        });
     return res.status(200).send("Image upload ok");
-
     });
   
 app.listen(port, () => console.log(`Server listening a port ${port}!`));
